@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자주 묻는 질문 - Bread Crumbs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Caveat:wght@400;700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #1a3a6b;
+            line-height: 1.6;
+            background: #F5F0E8;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a3a6b;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .logo span {
+            color: #FF6B9D;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1a3a6b;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #FF6B9D;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #1a3a6b;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        /* Hero Section */
+        .faq-hero {
+            padding: 8rem 5% 4rem;
+            background: white;
+            text-align: center;
+        }
+
+        .faq-hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            color: #1a3a6b;
+            margin-bottom: 1rem;
+        }
+
+        .faq-hero p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Category Section */
+        .category-section {
+            padding: 3rem 5%;
+            background: #F5F0E8;
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .category-tab {
+            padding: 0.8rem 2rem;
+            background: white;
+            border: 2px solid #1a3a6b;
+            border-radius: 25px;
+            color: #1a3a6b;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-tab.active,
+        .category-tab:hover {
+            background: #1a3a6b;
+            color: white;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 2rem 5%;
+            background: white;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-category {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: #1a3a6b;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #FFD93D;
+        }
+
+        .faq-item {
+            background: #f8f8f8;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            background: #F5F0E8;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            font-weight: 700;
+            color: #1a3a6b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.05rem;
+        }
+
+        .faq-question::before {
+            content: "Q.";
+            font-family: 'Montserrat', sans-serif;
+            color: #FF6B9D;
+            font-weight: 900;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .faq-icon {
+            font-size: 1.5rem;
+            color: #FFD93D;
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 1.5rem;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        .faq-answer p {
+            color: #666;
+            line-height: 1.8;
+            padding-left: 2.5rem;
+        }
+
+        .faq-answer p::before {
+            content: "A.";
+            font-family: 'Montserrat', sans-serif;
+            color: #4A90E2;
+            font-weight: 900;
+            margin-right: 1rem;
+            margin-left: -2.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Contact CTA */
+        .contact-cta {
+            padding: 4rem 5%;
+            background: #1a3a6b;
+            text-align: center;
+        }
+
+        .contact-cta h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .contact-cta p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .contact-btn.primary {
+            background: #FFD93D;
+            color: #1a3a6b;
+        }
+
+        .contact-btn.primary:hover {
+            background: #FFC700;
+            transform: translateY(-2px);
+        }
+
+        .contact-btn.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .contact-btn.secondary:hover {
+            background: white;
+            color: #1a3a6b;
+        }
+
+        /* Footer */
+        footer {
+            background: #0f2347;
+            color: white;
+            padding: 3rem 5%;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 5%;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 2rem 0;
+                gap: 1.5rem;
+                transition: left 0.3s ease;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1rem;
+                font-size: 1.1rem;
+            }
+
+            .faq-hero h1 {
+                font-size: 2rem;
+            }
+
+            .category-title {
+                font-size: 1.4rem;
+            }
+
+            .faq-question {
+                font-size: 0.95rem;
+            }
+
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="bakery-landing.html" class="logo">bread <span>crumbs</span></a>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="bakery-landing.html#home" onclick="closeMenu()">메인</a></li>
+            <li><a href="bakery-landing.html#products" onclick="closeMenu()">제품</a></li>
+            <li><a href="class.html" onclick="closeMenu()">클래스</a></li>
+            <li><a href="faq.html" onclick="closeMenu()">FAQ</a></li>
+            <li><a href="bakery-landing.html#contact" onclick="closeMenu()">연락처</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="faq-hero">
+        <h1>자주 묻는 질문</h1>
+        <p>궁금하신 사항을 빠르게 찾아보세요. 추가 문의사항은 언제든지 연락주세요.</p>
+    </section>
+
+    <!-- Category Tabs -->
+    <section class="category-section">
+        <div class="category-tabs">
+            <button class="category-tab active" onclick="showCategory('all')">전체</button>
+            <button class="category-tab" onclick="showCategory('order')">주문/배송</button>
+            <button class="category-tab" onclick="showCategory('product')">제품</button>
+            <button class="category-tab" onclick="showCategory('class')">클래스</button>
+            <button class="category-tab" onclick="showCategory('catering')">케이터링</button>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <!-- 주문/배송 -->
+            <div class="faq-category" data-category="order">
+                <h2 class="category-title">주문 및 배송</h2>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        주문은 어떻게 하나요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            홈페이지 "지금 주문하기" 버튼을 클릭하거나 전화(02-1234-5678)로 주문하실 수 있습니다.
+                            온라인 주문 시 주문서를 작성해주시면 담당자가 확인 후 연락드립니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        배송은 가능한가요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            서울 및 수도권 지역은 배송 가능합니다. 배송비는 3만원 이상 주문 시 무료이며,
+                            3만원 미만 주문 시 3,000원의 배송비가 부과됩니다. 당일 오전 10시 이전 주문 시 당일 배송 가능합니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        픽업도 가능한가요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            네, 매장에서 직접 픽업 가능합니다. 주문 시 "매장 픽업"을 선택해주시면
+                            준비 완료 후 문자로 알려드립니다. 영업시간은 월-금 07:00-20:00, 주말 08:00-21:00입니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        예약 주문이 가능한가요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            네, 가능합니다. 대량 주문이나 특정 날짜/시간에 받으시려면 최소 2일 전에 예약해주세요.
+                            특별한 요청사항이 있으시면 주문 시 메모란에 남겨주시기 바랍니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 제품 -->
+            <div class="faq-category" data-category="product">
+                <h2 class="category-title">제품 정보</h2>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        빵의 유통기한은 얼마나 되나요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            방부제를 사용하지 않아 유통기한이 짧습니다. 크루아상과 바게트는 당일 섭취를 권장하며,
+                            사워도우는 냉장 보관 시 3-4일, 베이글은 냉동 보관 시 2주까지 보관 가능합니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        알레르기 정보를 알 수 있나요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            모든 제품에는 밀가루가 포함되어 있으며, 크루아상과 머핀에는 유제품과 계란이 들어갑니다.
+                            특정 알레르기가 있으시면 주문 전에 꼭 문의해주세요. 제품별 상세 알레르기 정보를 안내해드립니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        비건 제품이 있나요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            사워도우 브레드와 바게트는 비건 친화적입니다. 동물성 재료(버터, 우유, 계란) 없이
+                            밀가루, 물, 소금, 천연 효모만으로 만듭니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        재료는 어디서 공급받나요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            밀가루는 프랑스산 프리미엄 밀가루를, 버터는 AOP 인증 고급 버터를 사용합니다.
+                            과일과 채소는 국내산 유기농 재료를 우선적으로 사용하며, 모든 재료는 신선도를 최우선으로 선별합니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 클래스 -->
+            <div class="faq-category" data-category="class">
+                <h2 class="category-title">베이킹 클래스</h2>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        베이킹 초보도 참여 가능한가요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            네! 초보자를 위한 베이직 클래스부터 준비되어 있습니다.
+                            전문 셰프님이 기초부터 차근차근 알려주시기 때문에 걱정하지 않으셔도 됩니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        준비물이 따로 필요한가요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            모든 재료와 도구는 제공됩니다. 앞치마와 편한 복장으로 오시면 되며,
+                            만든 빵을 가져갈 용기만 준비해주세요!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        환불 정책이 어떻게 되나요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            수업 7일 전까지는 100% 환불, 3일 전까지는 50% 환불 가능합니다.
+                            수업 당일 취소는 환불이 불가하오니 양해 부탁드립니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        만든 빵은 가져갈 수 있나요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            네! 수업 시간에 만든 모든 빵은 100% 가져가실 수 있습니다.
+                            포장 용기를 준비해주시면 됩니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 케이터링 -->
+            <div class="faq-category" data-category="catering">
+                <h2 class="category-title">케이터링</h2>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        최소 주문 인원이 있나요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            케이터링 서비스는 최소 10인분부터 주문 가능합니다.
+                            인원에 따라 메뉴 구성과 가격이 달라지므로 상담을 통해 맞춤 견적을 제공해드립니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        얼마 전에 예약해야 하나요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            최소 3일 전에 예약해주셔야 합니다. 대규모 행사(50인 이상)의 경우
+                            1주일 전 예약을 권장드립니다. 정확한 수량과 메뉴 준비를 위해 미리 상담해주세요.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        배달도 해주시나요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            네, 서울 및 수도권 지역은 직접 배달해드립니다.
+                            배달비는 지역과 수량에 따라 상이하며, 상담 시 안내해드립니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        메뉴 커스터마이징이 가능한가요?
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>
+                            네, 가능합니다. 행사 성격과 고객 취향에 맞춰 메뉴를 구성해드립니다.
+                            알레르기나 특별한 식이 요구사항도 반영 가능하오니 상담 시 말씀해주세요.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="contact-cta">
+        <h2>더 궁금하신 사항이 있으신가요?</h2>
+        <p>언제든지 연락주세요. 친절하게 안내해드리겠습니다.</p>
+        <div class="contact-buttons">
+            <a href="tel:02-1234-5678" class="contact-btn primary">📞 전화 문의</a>
+            <a href="mailto:hello@breadcrumbs.kr" class="contact-btn secondary">✉️ 이메일 문의</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Bread Crumbs Bakery. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger');
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger');
+            navLinks.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
+
+        // FAQ Toggle
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+        }
+
+        // Category Filter
+        function showCategory(category) {
+            const tabs = document.querySelectorAll('.category-tab');
+            const categories = document.querySelectorAll('.faq-category');
+
+            // Update active tab
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Show/hide categories
+            if (category === 'all') {
+                categories.forEach(cat => cat.style.display = 'block');
+            } else {
+                categories.forEach(cat => {
+                    if (cat.dataset.category === category) {
+                        cat.style.display = 'block';
+                    } else {
+                        cat.style.display = 'none';
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

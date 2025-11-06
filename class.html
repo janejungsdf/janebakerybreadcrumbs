@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>베이킹 클래스 - Bread Crumbs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Caveat:wght@400;700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #1a3a6b;
+            line-height: 1.6;
+            background: #fff;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a3a6b;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #FF6B9D;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1a3a6b;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #FF6B9D;
+        }
+
+        /* Hero Section */
+        .class-hero {
+            padding: 8rem 5% 4rem;
+            background: #f8f8f8;
+            text-align: center;
+        }
+
+        .hero-image-wrapper {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .hero-bread-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #DEB887, #D2691E);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10rem;
+        }
+
+        .class-hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            color: #1a3a6b;
+            margin-bottom: 1rem;
+        }
+
+        .class-hero .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        /* Info Section */
+        .class-info {
+            padding: 4rem 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .info-item {
+            text-align: center;
+            padding: 2rem;
+            background: #f8f8f8;
+            border-radius: 15px;
+        }
+
+        .info-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            color: #1a3a6b;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .info-description {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Classes Section */
+        .classes-section {
+            padding: 4rem 5%;
+            background: #F5F0E8;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            color: #1a3a6b;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .class-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: 3rem;
+        }
+
+        .class-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            transition: transform 0.3s;
+        }
+
+        .class-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .class-card.reverse {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .class-card.reverse .class-image {
+            order: 2;
+        }
+
+        .class-card.reverse .class-content {
+            order: 1;
+        }
+
+        .class-image {
+            height: 100%;
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-image.pink {
+            background: linear-gradient(135deg, #FF6B9D, #FF8FB3);
+        }
+
+        .class-image.yellow {
+            background: linear-gradient(135deg, #FFD93D, #FFE66D);
+        }
+
+        .class-image.brown {
+            background: linear-gradient(135deg, #DEB887, #D2691E);
+        }
+
+        .class-image.blue {
+            background: linear-gradient(135deg, #89CFF0, #4A90E2);
+        }
+
+        .class-content {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .class-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: #FFD93D;
+            color: #1a3a6b;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+
+        .class-content h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            color: #1a3a6b;
+            margin-bottom: 1rem;
+        }
+
+        .class-content p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .class-details {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .detail-item strong {
+            color: #1a3a6b;
+            min-width: 80px;
+        }
+
+        .class-price {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            color: #1a3a6b;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+        }
+
+        .enroll-btn {
+            padding: 1rem 2rem;
+            background: #1a3a6b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: fit-content;
+        }
+
+        .enroll-btn:hover {
+            background: #2c5aa0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 58, 107, 0.4);
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 4rem 5%;
+            background: white;
+        }
+
+        .gallery-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item:nth-child(1) {
+            background: linear-gradient(135deg, #FFD93D, #FFE66D);
+        }
+
+        .gallery-item:nth-child(2) {
+            background: linear-gradient(135deg, #FF6B9D, #FF8FB3);
+        }
+
+        .gallery-item:nth-child(3) {
+            background: linear-gradient(135deg, #DEB887, #D2691E);
+        }
+
+        .gallery-item:nth-child(4) {
+            background: linear-gradient(135deg, #89CFF0, #4A90E2);
+        }
+
+        .gallery-item:nth-child(5) {
+            background: linear-gradient(135deg, #DEB887, #D2691E);
+        }
+
+        .gallery-item:nth-child(6) {
+            background: linear-gradient(135deg, #FFD93D, #FFE66D);
+        }
+
+        .gallery-item:nth-child(7) {
+            background: linear-gradient(135deg, #FF6B9D, #FF8FB3);
+        }
+
+        .gallery-item:nth-child(8) {
+            background: linear-gradient(135deg, #89CFF0, #4A90E2);
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            padding: 4rem 5%;
+            background: #F5F0E8;
+        }
+
+        .testimonial-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD93D, #FF6B9D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .testimonial-name {
+            font-weight: 700;
+            color: #1a3a6b;
+        }
+
+        .testimonial-rating {
+            color: #FFD93D;
+            font-size: 1rem;
+        }
+
+        .testimonial-text {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 4rem 5%;
+            background: white;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: #f8f8f8;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            background: #F5F0E8;
+        }
+
+        .faq-question {
+            font-weight: 700;
+            color: #1a3a6b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            color: #666;
+            margin-top: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a3a6b;
+            color: white;
+            padding: 3rem 5%;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .class-card,
+            .class-card.reverse {
+                grid-template-columns: 1fr;
+            }
+
+            .class-card.reverse .class-image,
+            .class-card.reverse .class-content {
+                order: unset;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .class-hero h1 {
+                font-size: 2rem;
+            }
+
+            .class-content {
+                padding: 2rem;
+            }
+
+            .class-content h3 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="bakery-landing.html" class="logo">bread <span>crumbs</span></a>
+        <ul class="nav-links">
+            <li><a href="bakery-landing.html#home">메인</a></li>
+            <li><a href="bakery-landing.html#products">제품</a></li>
+            <li><a href="class.html">클래스</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="bakery-landing.html#contact">연락처</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="class-hero">
+        <div class="hero-image-wrapper">
+            <div class="hero-bread-image">🥖</div>
+        </div>
+        <h1>베이킹 클래스</h1>
+        <p class="subtitle">전문 셰프와 함께하는 프리미엄 베이킹 클래스</p>
+    </section>
+
+    <!-- Info Section -->
+    <section class="class-info">
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-icon">👨‍🍳</div>
+                <div class="info-title">전문 강사진</div>
+                <div class="info-description">프랑스 르꼬르동블루 출신<br>15년 경력 셰프</div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">👥</div>
+                <div class="info-title">소규모 클래스</div>
+                <div class="info-description">최대 6명까지<br>1:1 밀착 지도</div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">🎁</div>
+                <div class="info-title">재료 제공</div>
+                <div class="info-description">프리미엄 재료<br>100% 무료 제공</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Classes Section -->
+    <section class="classes-section">
+        <h2 class="section-title">클래스 소개</h2>
+        <div class="class-grid">
+            <!-- Class 1 -->
+            <div class="class-card">
+                <div class="class-image pink">🥐</div>
+                <div class="class-content">
+                    <span class="class-badge">인기 클래스</span>
+                    <h3>프렌치 크루아상 마스터</h3>
+                    <p>
+                        완벽한 256개 결을 만드는 정통 프랑스 크루아상 클래스입니다.
+                        72시간 발효 과정부터 베이킹까지 모든 과정을 배웁니다.
+                    </p>
+                    <div class="class-details">
+                        <div class="detail-item">
+                            <strong>📅 일정:</strong>
+                            <span>매주 토요일 10:00 - 14:00</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>⏱️ 시간:</strong>
+                            <span>4시간 (1회)</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>👥 정원:</strong>
+                            <span>6명</span>
+                        </div>
+                    </div>
+                    <div class="class-price">120,000원</div>
+                    <button class="enroll-btn">수강 신청하기</button>
+                </div>
+            </div>
+
+            <!-- Class 2 -->
+            <div class="class-card reverse">
+                <div class="class-image yellow">🍞</div>
+                <div class="class-content">
+                    <span class="class-badge">추천</span>
+                    <h3>천연발효 사워도우</h3>
+                    <p>
+                        건강한 빵의 대명사 사워도우를 처음부터 만들어봅니다.
+                        천연 발효종 만들기부터 48시간 발효 과정까지 상세히 배웁니다.
+                    </p>
+                    <div class="class-details">
+                        <div class="detail-item">
+                            <strong>📅 일정:</strong>
+                            <span>매주 일요일 10:00 - 15:00</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>⏱️ 시간:</strong>
+                            <span>5시간 (2회 과정)</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>👥 정원:</strong>
+                            <span>6명</span>
+                        </div>
+                    </div>
+                    <div class="class-price">180,000원</div>
+                    <button class="enroll-btn">수강 신청하기</button>
+                </div>
+            </div>
+
+            <!-- Class 3 -->
+            <div class="class-card">
+                <div class="class-image brown">🥖</div>
+                <div class="class-content">
+                    <span class="class-badge">초보 추천</span>
+                    <h3>베이직 바게트</h3>
+                    <p>
+                        베이킹 초보자를 위한 기초 바게트 클래스입니다.
+                        반죽부터 성형, 베이킹까지 기본기를 탄탄하게 배웁니다.
+                    </p>
+                    <div class="class-details">
+                        <div class="detail-item">
+                            <strong>📅 일정:</strong>
+                            <span>매주 금요일 14:00 - 17:00</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>⏱️ 시간:</strong>
+                            <span>3시간 (1회)</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>👥 정원:</strong>
+                            <span>6명</span>
+                        </div>
+                    </div>
+                    <div class="class-price">90,000원</div>
+                    <button class="enroll-btn">수강 신청하기</button>
+                </div>
+            </div>
+
+            <!-- Class 4 -->
+            <div class="class-card reverse">
+                <div class="class-image blue">🧁</div>
+                <div class="class-content">
+                    <span class="class-badge">신규</span>
+                    <h3>홈메이드 베이글 & 머핀</h3>
+                    <p>
+                        집에서 쉽게 만들 수 있는 베이글과 머핀 클래스입니다.
+                        다양한 맛의 베이글과 촉촉한 머핀 만드는 법을 배웁니다.
+                    </p>
+                    <div class="class-details">
+                        <div class="detail-item">
+                            <strong>📅 일정:</strong>
+                            <span>매주 목요일 15:00 - 18:00</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>⏱️ 시간:</strong>
+                            <span>3시간 (1회)</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>👥 정원:</strong>
+                            <span>6명</span>
+                        </div>
+                    </div>
+                    <div class="class-price">85,000원</div>
+                    <button class="enroll-btn">수강 신청하기</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <h2 class="section-title">클래스 현장</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">🥐</div>
+            <div class="gallery-item">🍞</div>
+            <div class="gallery-item">🥖</div>
+            <div class="gallery-item">🥯</div>
+            <div class="gallery-item">🧁</div>
+            <div class="gallery-item">🥐</div>
+            <div class="gallery-item">🍰</div>
+            <div class="gallery-item">🍞</div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <h2 class="section-title">수강생 후기</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">👩</div>
+                    <div>
+                        <div class="testimonial-name">김지혜</div>
+                        <div class="testimonial-rating">★★★★★</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    크루아상 클래스 수강했는데 정말 자세하게 알려주셔서 집에서도 성공적으로 만들 수 있었어요!
+                    셰프님이 너무 친절하시고 꿀팁도 많이 알려주셔서 감사했습니다.
+                </p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">👨</div>
+                    <div>
+                        <div class="testimonial-name">박준호</div>
+                        <div class="testimonial-rating">★★★★★</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    사워도우 클래스가 정말 유익했어요. 발효종 만드는 것부터 차근차근 배워서
+                    이제 집에서 건강한 빵을 직접 구워먹고 있습니다!
+                </p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">👩</div>
+                    <div>
+                        <div class="testimonial-name">이서연</div>
+                        <div class="testimonial-rating">★★★★★</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    베이킹 초보인데 바게트 클래스 듣고 자신감이 생겼어요.
+                    소규모라서 1:1로 봐주시고, 재료도 좋은 걸로 제공해주셔서 최고예요!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <h2 class="section-title">자주 묻는 질문</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    Q. 베이킹을 한 번도 해본 적이 없는데 괜찮을까요?
+                </div>
+                <div class="faq-answer">
+                    A. 네! 초보자를 위한 베이직 클래스부터 준비되어 있습니다.
+                    셰프님이 기초부터 차근차근 알려주시기 때문에 걱정하지 않으셔도 됩니다.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Q. 준비물이 따로 필요한가요?
+                </div>
+                <div class="faq-answer">
+                    A. 모든 재료와 도구는 제공됩니다. 앞치마와 편한 복장으로 오시면 됩니다.
+                    만든 빵을 가져갈 용기만 준비해주세요!
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Q. 환불 정책이 어떻게 되나요?
+                </div>
+                <div class="faq-answer">
+                    A. 수업 7일 전까지는 100% 환불, 3일 전까지는 50% 환불 가능합니다.
+                    수업 당일 취소는 환불이 불가합니다.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Q. 만든 빵은 가져갈 수 있나요?
+                </div>
+                <div class="faq-answer">
+                    A. 네! 수업 시간에 만든 모든 빵은 100% 가져가실 수 있습니다.
+                    포장 용기를 준비해주시면 됩니다.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Q. 주차가 가능한가요?
+                </div>
+                <div class="faq-answer">
+                    A. 건물 지하 주차장 이용 가능하며, 2시간 무료 주차권을 제공합니다.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Bread Crumbs Bakery. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
